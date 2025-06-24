@@ -1,0 +1,56 @@
+import React from "react";
+import mapPin from "../../assets/mapPin.png";
+import starIcon from "../../assets/star.png";
+import available from "../../assets/available.png";
+import expired from "../../assets/expired.png";
+
+const OfferCard = ({ data }) => {
+    const destination = data.offer_name.split(",");
+
+    const ratingArray = Array.from({ length: data.stars || 0 });
+    const rating = ratingArray.map((_, i) => (
+        <img
+            key={`${data.id}-${i}`}
+            src={starIcon}
+            alt="star"
+            className="w-[20px] h-[20px]"
+        />
+    ));
+
+    return (
+        <div className="h-[250px] bg-[#f0f2f3] mb-[5px] cursor-pointer flex rounded-lg shadow-xl relative">
+            <div className="absolute top-[-5px] right-[-5px] rotate-90">
+                <img
+                    src={data.available === true || data.available === "1" ? available : expired}
+                    alt="status"
+                    className="w-[50px] h-[50px]"
+                />
+            </div>
+            <div className="w-[70%] h-[100%] flex justify-center items-center p-[1rem]">
+                <img
+                    src={`/cityImages/${data.destination_image}`}
+                    alt={data.city}
+                    className="w-[100%] h-[100%] object-cover rounded-lg"
+                />
+            </div>
+            <div className="w-[30%] py-[1rem] self-center">
+                <div className="flex items-center gap-1">
+                    <img src={mapPin} className="w-[7px] h-[9.55px]" alt="location" />
+                    <h2 className="text-xs uppercase tracking-wide">{data.country}</h2>
+                </div>
+                <h1 className="text-lg font-bold mb-1">{destination[0]}</h1>
+                <h2 className="font-semibold mb-1">
+                    {data.apartment ? "Apartment" : data.accomodation}
+                </h2>
+                <p className="mb-1">{destination[1] || data.city}</p>
+                <p className="mb-1">{data.num_of_days} Days</p>
+                <p className="font-bold mb-1">
+                    Rp {Number(data.price).toLocaleString("id-ID")}
+                </p>
+                <div className="font-bold flex gap-1">{rating}</div>
+            </div>
+        </div>
+    );
+};
+
+export default OfferCard;
