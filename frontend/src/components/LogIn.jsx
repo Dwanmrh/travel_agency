@@ -10,7 +10,7 @@ import showImage from "../assets/show.png";
 import hideImage from "../assets/hide.png";
 import { toast } from "react-toastify";
 
-function LogIn() {
+function LogIn({ closeM }) {
     const navigate = useNavigate();
     const [show, setShow] = useState(false);
     const [formState, inputHandler] = useForm(
@@ -27,9 +27,7 @@ function LogIn() {
         false
     );
 
-    const toogleShow = () => {
-        setShow(!show);
-    };
+    const toggleShow = () => setShow(!show);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -43,20 +41,24 @@ function LogIn() {
         if (response) {
             const user = await UserService.getUser(data);
             SessionService.saveSession(user);
-            navigate("/adminOffers");
-            toast.success("Successfully logged in !", {
+            toast.success("Successfully logged in!", {
                 position: toast.POSITION.TOP_RIGHT,
             });
+            closeM?.(); // close modal if function provided
+            navigate("/adminOffers");
         } else {
-            toast.error("Error! Change your credentials !", {
+            toast.error("Login failed! Check your credentials.", {
                 position: toast.POSITION.TOP_RIGHT,
             });
         }
     };
 
     return (
-        <div className="w-[570px] h-[380px] p-[4rem] rounded-lg shadow-2xl bg-white relative">
-            <form onSubmit={handleSubmit}>
+        <div className="w-full max-w-md bg-white rounded-xl shadow-xl px-8 py-10 relative">
+            <h2 className="text-2xl font-bold text-blue-800 mb-6 text-center">
+                Welcome Back
+            </h2>
+            <form onSubmit={handleSubmit} className="space-y-6">
                 <Input
                     id="email"
                     label="Email"
@@ -64,33 +66,54 @@ function LogIn() {
                     initialValue={formState.inputs.email.value}
                     initialValid={formState.inputs.email.isValid}
                     validators={[VALIDATOR_REQUIRE()]}
-                    errorText="Enter your email!"
+                    errorText="Please enter your email."
                     onInput={inputHandler}
                 />
-                <Input
-                    id="password"
-                    label="Password"
-                    type={show ? "text" : "password"}
-                    initialValue={formState.inputs.password.value}
-                    initialValid={formState.inputs.password.isValid}
-                    validators={[VALIDATOR_REQUIRE()]}
-                    errorText="Enter your password!"
-                    onInput={inputHandler}
-                />
-                <div
-                    onClick={toogleShow}
-                    className="w-[30px] h-[30px] absolute top-[50.5%] right-[13%] cursor-pointer"
-                >
-                    <img
-                        src={!show ? showImage : hideImage}
-                        alt="toogle"
-                        className="w-[30px] h-[30px]"
+
+                <div className="relative">
+                    <Input
+                        id="password"
+                        label="Password"
+                        type={show ? "text" : "password"}
+                        initialValue={formState.inputs.password.value}
+                        initialValid={formState.inputs.password.isValid}
+                        validators={[VALIDATOR_REQUIRE()]}
+                        errorText="Please enter your password."
+                        onInput={inputHandler}
                     />
+                    <button
+                        type="button"
+                        onClick={toggleShow}
+                        className="absolute right-3 bottom-3 focus:outline-none"
+                    >
+                        <img
+                            src={show ? hideImage : showImage}
+                            alt="toggle password"
+                            className="w-5 h-5 opacity-70 hover:opacity-100"
+                        />
+                    </button>
                 </div>
-                <div className="mt-[40px]">
-                    <Button type="submit">Login</Button>
+
+                <div className="pt-4">
+                    <Button
+                        type="submit"
+                        className="bg-blue-800 hover:bg-blue-900 text-white font-semibold rounded-full w-full py-2"
+                    >
+                        Log In
+                    </Button>
                 </div>
             </form>
+
+            {/* Don't have an account */}
+            <p className="text-sm text-center text-gray-600 mt-6">
+                Don’t have an account?{" "}
+                <span
+                    onClick={() => navigate("/register")}
+                    className="text-blue-600 font-medium hover:underline cursor-pointer"
+                >
+                    Register
+                </span>
+            </p>
         </div>
     );
 }

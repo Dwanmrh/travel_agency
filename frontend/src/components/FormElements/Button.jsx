@@ -4,10 +4,10 @@ import { Link } from "react-router-dom";
 const Button = ({
     to,
     children,
-    type,
-    disabled,
+    type = "button",
+    disabled = false,
     onClick,
-    className,
+    className = "",
     hasIcon,
     other,
 }) => {
@@ -24,7 +24,7 @@ const Button = ({
             <button
                 type={type}
                 onClick={onClick}
-                className={`${className} absolute  hover:bg-hoverGreen rounded-[4px] `}
+                className={`${className} absolute hover:bg-blue-700 rounded-[4px]`}
             >
                 {children}
             </button>
@@ -43,15 +43,18 @@ const Button = ({
         );
     }
 
+    // 🔵 Default tombol biru
+    const defaultClass = `hover:shadow-form rounded-[4px] w-full flex justify-center py-3 px-8 text-center text-base font-semibold text-white outline-none`;
+    const finalClass = className
+        ? className
+        : `${disabled ? "bg-[#a9a9a9]" : "bg-blue-600 hover:bg-blue-700"} ${defaultClass}`;
+
     return (
         <button
-            className={`${
-                disabled ? "bg-[#a9a9a9]" : "bg-green hover:bg-hoverGreen"
-            } 
-      hover:shadow-form rounded-[4px] w-full flex justify-center  py-3 px-8 text-center text-base font-semibold text-white outline-none`}
             type={type}
             onClick={onClick}
             disabled={disabled}
+            className={finalClass}
         >
             {children}
         </button>
