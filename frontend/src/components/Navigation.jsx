@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import logoDark from "../assets/logo-dark.png";
 import Register from "./Register";
 import LogIn from "./LogIn";
-import userIcon from "../assets/user.png";
 import { SessionService } from "../services/SessionService";
 import { useLocation, useNavigate } from "react-router-dom";
 
@@ -35,32 +34,38 @@ function Navigation() {
 
     return (
         <>
-            <nav className="fixed top-0 left-0 w-full z-50 bg-white/80 backdrop-blur-md shadow-sm px-6 py-3 flex justify-between items-center">
-                {/* Logo */}
-                <div className="cursor-pointer" onClick={() => navigate("/")}>
-                    <img src={logoDark} alt="Logo" className="w-[100px]" />
+            <nav className="fixed top-0 left-0 w-full z-50 bg-blue-500/90 backdrop-blur-md shadow-md px-6 py-3 flex justify-between items-center h-[64px]">
+                {/* Logo and Brand */}
+                <div
+                    className="cursor-pointer flex items-center space-x-3"
+                    onClick={() => navigate("/")}
+                >
+                    <img src={logoDark} alt="Logo" className="h-[52px]" />
+                    <span className="text-white text-xl font-semibold tracking-wide">
+                        Tenta Tour
+                    </span>
                 </div>
 
-                {/* Menu */}
-                <div className="hidden md:flex space-x-6 items-center text-sm font-medium">
+                {/* Navigation Menu */}
+                <div className="hidden md:flex space-x-6 text-[15px] font-medium text-white">
                     {logged && (
                         <>
                             <button
                                 onClick={() => navigate("/adminOffers")}
-                                className={`hover:text-green-600 transition ${
+                                className={`transition hover:text-yellow-300 hover:underline underline-offset-4 ${
                                     location.pathname === "/adminOffers"
-                                        ? "text-green-600 border-b-2 border-green-600"
-                                        : "text-gray-700"
+                                        ? "text-yellow-300 underline"
+                                        : ""
                                 }`}
                             >
                                 Offers
                             </button>
                             <button
                                 onClick={() => navigate("/reservations")}
-                                className={`hover:text-green-600 transition ${
+                                className={`transition hover:text-yellow-300 hover:underline underline-offset-4 ${
                                     location.pathname === "/reservations"
-                                        ? "text-green-600 border-b-2 border-green-600"
-                                        : "text-gray-700"
+                                        ? "text-yellow-300 underline"
+                                        : ""
                                 }`}
                             >
                                 Reservations
@@ -68,10 +73,10 @@ function Navigation() {
                             {user?.role === "admin" && (
                                 <button
                                     onClick={() => navigate("/users")}
-                                    className={`hover:text-green-600 transition ${
+                                    className={`transition hover:text-yellow-300 hover:underline underline-offset-4 ${
                                         location.pathname === "/users"
-                                            ? "text-green-600 border-b-2 border-green-600"
-                                            : "text-gray-700"
+                                            ? "text-yellow-300 underline"
+                                            : ""
                                     }`}
                                 >
                                     Users
@@ -82,12 +87,12 @@ function Navigation() {
                 </div>
 
                 {/* Auth Buttons */}
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-3">
                     {!logged ? (
                         <>
                             <button
                                 onClick={() => setModal(true)}
-                                className="px-4 py-1 border border-green-600 text-green-600 rounded hover:bg-green-600 hover:text-white transition"
+                                className="px-4 py-1.5 text-sm font-medium text-white bg-blue-800 rounded-full hover:bg-blue-900 transition"
                             >
                                 Log In
                             </button>
@@ -99,22 +104,22 @@ function Navigation() {
                             </button>
                             <button
                                 onClick={() => navigate("/offers")}
-                                className="px-4 py-1 border border-gray-400 text-gray-700 rounded hover:bg-gray-100 transition"
+                                className="px-4 py-1.5 text-sm font-medium text-white bg-blue-800 rounded-full hover:bg-blue-900 transition"
                             >
                                 Guest
                             </button>
                         </>
                     ) : (
                         <>
-                            <img
-                                src={userIcon}
-                                alt="user"
-                                className="w-9 h-9 rounded-full cursor-pointer border border-gray-300 hover:ring-2 ring-green-400"
+                            <button
                                 onClick={handleProfile}
-                            />
+                                className="px-4 py-1.5 text-sm font-medium text-white bg-blue-800 rounded-full hover:bg-blue-900 transition"
+                            >
+                                Profile
+                            </button>
                             <button
                                 onClick={handleLogout}
-                                className="px-3 py-1 border border-red-500 text-red-500 rounded hover:bg-red-500 hover:text-white transition"
+                                className="px-4 py-1.5 text-sm font-medium text-white bg-blue-800 rounded-full hover:bg-blue-900 transition"
                             >
                                 Logout
                             </button>
@@ -123,7 +128,7 @@ function Navigation() {
                 </div>
             </nav>
 
-            {/* Modal Login */}
+            {/* Login Modal */}
             {modal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
                     <div
@@ -155,3 +160,4 @@ function Navigation() {
 }
 
 export default Navigation;
+
