@@ -34,8 +34,8 @@ function UserAdd({ closeM, onAdd }) {
             toast.success("Successfully added user!", {
                 position: toast.POSITION.TOP_RIGHT,
             });
-            onAdd(); // fetch ulang user list
-            closeM(); // tutup modal
+            onAdd(); // refresh list
+            closeM(); // close modal
         } else {
             toast.error("Error! Change your inputs!", {
                 position: toast.POSITION.TOP_RIGHT,
@@ -44,12 +44,12 @@ function UserAdd({ closeM, onAdd }) {
     };
 
     return (
-        <div className="w-[40%] h-[60%] bg-white rounded-md min-h-[590px]">
-            <form onSubmit={handleSubmit} className="gap-[1rem] p-12 mx-auto">
+        <div className="w-[90%] max-w-md bg-white rounded-md shadow-md p-6">
+            <form onSubmit={handleSubmit} className="space-y-5">
                 <Input
                     id="email"
-                    label="email"
-                    type="text"
+                    label="Email"
+                    type="email"
                     initialValue=""
                     initialValid={false}
                     validators={[VALIDATOR_REQUIRE()]}
@@ -58,7 +58,7 @@ function UserAdd({ closeM, onAdd }) {
                 />
                 <Input
                     id="name"
-                    label="name"
+                    label="Name"
                     type="text"
                     initialValue=""
                     initialValid={false}
@@ -68,7 +68,7 @@ function UserAdd({ closeM, onAdd }) {
                 />
                 <Input
                     id="surname"
-                    label="surname"
+                    label="Surname"
                     type="text"
                     initialValue=""
                     initialValid={false}
@@ -78,7 +78,7 @@ function UserAdd({ closeM, onAdd }) {
                 />
                 <Input
                     id="phone_number"
-                    label="phone_number"
+                    label="Phone Number"
                     type="text"
                     initialValue=""
                     initialValid={false}
@@ -88,7 +88,7 @@ function UserAdd({ closeM, onAdd }) {
                 />
                 <Input
                     id="password"
-                    label="password"
+                    label="Password"
                     type="password"
                     initialValue=""
                     initialValid={false}
@@ -96,8 +96,10 @@ function UserAdd({ closeM, onAdd }) {
                     errorText="Enter password!"
                     onInput={inputHandler}
                 />
-                <div className="mt-8">
-                    <Button type="submit">Add</Button>
+                <div className="pt-4">
+                    <Button type="submit" disabled={!formState.isValid}>
+                        Add
+                    </Button>
                 </div>
             </form>
         </div>

@@ -112,7 +112,7 @@ function AdminProfile() {
                         initialValue={formState.inputs.email.value}
                         initialValid={formState.inputs.email.isValid}
                         validators={[VALIDATOR_REQUIRE()]}
-                        errorText="Enter your name!"
+                        errorText="Enter your email!"
                         onInput={inputHandler}
                     />
                     <Input
@@ -122,7 +122,7 @@ function AdminProfile() {
                         initialValue={formState.inputs.name.value}
                         initialValid={formState.inputs.name.isValid}
                         validators={[VALIDATOR_REQUIRE()]}
-                        errorText="Enter your surname!"
+                        errorText="Enter your name!"
                         onInput={inputHandler}
                     />
                     <Input
@@ -132,7 +132,7 @@ function AdminProfile() {
                         initialValue={formState.inputs.surname.value}
                         initialValid={formState.inputs.surname.isValid}
                         validators={[VALIDATOR_REQUIRE()]}
-                        errorText="Enter phone number!"
+                        errorText="Enter phone surname!"
                         onInput={inputHandler}
                     />
                     <Input
@@ -142,7 +142,7 @@ function AdminProfile() {
                         initialValue={formState.inputs.phone_number.value}
                         initialValid={formState.inputs.phone_number.isValid}
                         validators={[VALIDATOR_REQUIRE()]}
-                        errorText="Enter valid email!"
+                        errorText="Enter valid phone_number!"
                         onInput={inputHandler}
                     />
                     <Input
@@ -153,7 +153,7 @@ function AdminProfile() {
                         initialValid={formState.inputs.role.isValid}
                         validators={[VALIDATOR_REQUIRE()]}
                         disabled
-                        errorText="Enter valid email!"
+                        errorText="Enter valid role!"
                         onInput={inputHandler}
                     />
                     <Button>Save</Button>

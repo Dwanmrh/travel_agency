@@ -41,11 +41,19 @@ const Users = () => {
                 {displayed}
             </div>
 
-            {/* Modal Add */}
+            {/* Modal Add User */}
             {modal && (
-                <div className="fixed z-50 inset-0 flex justify-center items-center bg-black bg-opacity-50">
-                    <div onClick={closeModal} className="absolute inset-0 cursor-pointer" />
-                    <UserAdd closeM={closeModal} onAdd={fetchUsers} />
+                <div className="fixed inset-0 z-50 flex items-center justify-center">
+                    {/* Background overlay */}
+                    <div
+                        className="absolute inset-0 bg-black bg-opacity-50 z-10"
+                        onClick={closeModal}
+                    />
+
+                    {/* Form Add User */}
+                    <div className="relative z-20 bg-white p-6 rounded-lg shadow-lg w-[90%] sm:w-[400px]">
+                        <UserAdd closeM={closeModal} onAdd={fetchUsers} />
+                    </div>
                 </div>
             )}
         </div>

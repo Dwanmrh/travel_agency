@@ -56,7 +56,7 @@ const Input = ({
     const hasError = !isValid && isTouched;
 
     return (
-        <div className="flex flex-col">
+        <div className="flex flex-col mb-5"> {/* memberi jarak antar input */}
             {label && (
                 <label
                     htmlFor={id}
