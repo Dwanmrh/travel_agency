@@ -74,7 +74,7 @@ const AdminOffers = () => {
             <div className="pt-28 px-6 md:px-16">
                 <div className="flex flex-col md:flex-row justify-between items-center mb-8">
                     <Search searchOffers={searchOffers} />
-                    <div className="mt-4 md:mt-0">
+                   <div className="mt-4 md:mt-0 ml-6">
                         <Button onClick={() => setAdding(true)}>Add Offer</Button>
                     </div>
                 </div>
