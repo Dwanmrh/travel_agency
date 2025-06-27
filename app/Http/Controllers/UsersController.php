@@ -18,27 +18,29 @@ class UsersController extends Controller
         return response()->json($users);
     }
 
-    public function store() {
-        $formValues = request()->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'surname' => ['required', 'string', 'max:255'],
-            'phone_number' => ['required', 'string', 'max:20'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8'],
-        ]);
+    public function store(Request $request)
+{
+    $formValues = $request->validate([
+        'name' => ['required', 'string', 'max:255'],
+        'surname' => ['required', 'string', 'max:255'],
+        'phone_number' => ['required', 'string', 'max:20'],
+        'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+        'password' => ['required', 'string', 'min:8', 'confirmed'],
+        'role' => ['required', 'in:user,admin,staff'],
+    ]);
 
-        User::create([
-            'name' => $formValues['name'],
-            'surname' => $formValues['surname'],
-            'phone_number' => $formValues['phone_number'],
-            'email' => $formValues['email'],
-            'password' => Hash::make($formValues['password']),
-            'role' => 'staff',
-            'email_verified_at' => date('Y-m-d H:i:s'),
-        ]);
+    $user = User::create([
+        'name' => $formValues['name'],
+        'surname' => $formValues['surname'],
+        'phone_number' => $formValues['phone_number'],
+        'email' => $formValues['email'],
+        'password' => Hash::make($formValues['password']),
+        'role' => $formValues['role'],
+        'email_verified_at' => now(),
+    ]);
 
-        return "USPEH USPEH USPELI SMO JE";
-    }
+    return response()->json($user);
+}
 
     public function update($id) {
 

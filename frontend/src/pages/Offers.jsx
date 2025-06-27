@@ -1,13 +1,16 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import OfferCard from "../components/OfferElements/OfferCard";
 import OfferDetails from "../components/OfferElements/OfferDetails";
 import { OfferService } from "../services/OfferService";
 import Pagination from "../components/Pagination";
 import Search from "../components/Search";
 import Navigation from "../components/Navigation";
+import { SessionService } from "../services/SessionService";
 import homeBg from "../assets/homeBg.jpg";
 
 const Offers = () => {
+    const navigate = useNavigate();
     const [offers, setOffers] = useState([]);
     const [modal, setModal] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
@@ -18,6 +21,15 @@ const Offers = () => {
     const [displayedOffers, setDisplayedOffers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(false);
+
+    useEffect(() => {
+        const user = SessionService.getSessionFromStorage();
+        if (!user || user.length === 0) {
+            navigate("/login");
+        } else if (user[0].role !== "user") {
+            navigate("/adminOffers");
+        }
+    }, []);
 
     useEffect(() => {
         document.body.style.overflow = modal ? "hidden" : "auto";
@@ -70,17 +82,12 @@ const Offers = () => {
             className="min-h-screen w-full bg-gradient-to-b from-blue-100 via-blue-50 to-white bg-fixed"
             style={{ backgroundImage: `url(${homeBg})` }}
         >
-            {/* Overlay semi-transparan */}
-            <div className="absolute inset-0 bg-white/80 z-0" />
-
-            {/* Navigation */}
+            <div className="absolute inset-0 bg-black opacity-50 z-0" />
             <div className="fixed w-full z-30">
                 <Navigation />
             </div>
 
-            {/* Main Content */}
             <div className="relative z-10 pt-[120px] pb-[80px] px-4 sm:px-8 max-w-[1440px] mx-auto">
-                {/* Search */}
                 <div className="mb-10 flex justify-center">
                     <div className="w-full sm:w-3/4 md:w-2/3 lg:w-1/2">
                         <Search
@@ -92,26 +99,22 @@ const Offers = () => {
                     </div>
                 </div>
 
-                {/* Offers */}
                 {loading ? (
-                    <p className="text-blue-800 text-center text-lg col-span-full">Loading offers...</p>
+                    <p className="text-white text-center text-lg col-span-full">Loading offers...</p>
                 ) : error ? (
                     <p className="text-red-600 text-center text-lg col-span-full">Failed to load offers.</p>
                 ) : (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {offerCards.length > 0 ? (
                             offerCards
                         ) : (
-                            <p className="text-blue-900 text-lg col-span-full text-center">
-                                No offers found.
-                            </p>
+                            <p className="text-white text-lg col-span-full text-center">No offers found.</p>
                         )}
                     </div>
                 )}
 
-                {/* Pagination */}
                 {!loading && !error && (
-                    <div className="mt-14 flex justify-center">
+                    <div className="mt-12 flex justify-center">
                         <Pagination
                             currentPage={currentPage}
                             minPage={minPage}
@@ -127,7 +130,6 @@ const Offers = () => {
                 )}
             </div>
 
-            {/* Modal Offer Details */}
             {modal && (
                 <div className="fixed inset-0 z-50 flex justify-center items-center backdrop-blur-md">
                     <div

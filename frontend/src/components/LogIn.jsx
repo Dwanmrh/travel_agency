@@ -15,14 +15,8 @@ function LogIn({ closeM }) {
     const [show, setShow] = useState(false);
     const [formState, inputHandler] = useForm(
         {
-            email: {
-                value: "",
-                isValid: false,
-            },
-            password: {
-                value: "",
-                isValid: false,
-            },
+            email: { value: "", isValid: false },
+            password: { value: "", isValid: false },
         },
         false
     );
@@ -41,13 +35,23 @@ function LogIn({ closeM }) {
         if (response) {
             const user = await UserService.getUser(data);
             SessionService.saveSession(user);
+
+            if (user[0].role === "admin" || user[0].role === "staff") {
+                navigate("/adminOffers");
+            } else if (user[0].role === "user") {
+                navigate("/offers");
+            } else {
+                toast.error("Unknown role. Access denied.");
+                return;
+            }
+
             toast.success("Successfully logged in!", {
                 position: toast.POSITION.TOP_RIGHT,
             });
-            closeM?.(); // close modal if function provided
-            navigate("/adminOffers");
+
+            closeM?.();
         } else {
-            toast.error("Login failed! Check your credentials.", {
+            toast.error("Login gagal! Periksa email atau password.", {
                 position: toast.POSITION.TOP_RIGHT,
             });
         }
@@ -55,9 +59,7 @@ function LogIn({ closeM }) {
 
     return (
         <div className="w-full max-w-md bg-white rounded-xl shadow-xl px-8 py-10 relative">
-            <h2 className="text-2xl font-bold text-blue-800 mb-6 text-center">
-                Welcome Back
-            </h2>
+            <h2 className="text-2xl font-bold text-blue-800 mb-6 text-center">Welcome Back</h2>
             <form onSubmit={handleSubmit} className="space-y-6">
                 <Input
                     id="email"
@@ -95,22 +97,15 @@ function LogIn({ closeM }) {
                 </div>
 
                 <div className="pt-4">
-                    <Button
-                        type="submit"
-                        className="bg-blue-800 hover:bg-blue-900 text-white font-semibold rounded-full w-full py-2"
-                    >
+                    <Button type="submit" className="bg-blue-800 hover:bg-blue-900 text-white font-semibold rounded-full w-full py-2">
                         Log In
                     </Button>
                 </div>
             </form>
 
-            {/* Don't have an account */}
             <p className="text-sm text-center text-gray-600 mt-6">
-                Don’t have an account?{" "}
-                <span
-                    onClick={() => navigate("/register")}
-                    className="text-blue-600 font-medium hover:underline cursor-pointer"
-                >
+                Don’t have an account? {" "}
+                <span onClick={() => navigate("/register")} className="text-blue-600 font-medium hover:underline cursor-pointer">
                     Register
                 </span>
             </p>

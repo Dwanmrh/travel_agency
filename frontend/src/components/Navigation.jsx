@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import logoDark from "../assets/logo-dark.png";
+import Register from "./Register";
 import LogIn from "./LogIn";
 import { SessionService } from "../services/SessionService";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -7,11 +8,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 function Navigation() {
     const [logged, setLogged] = useState(false);
     const [modal, setModal] = useState(false);
+    const [modalRegister, setModalRegister] = useState(false);
     const [user, setUser] = useState(null);
     const navigate = useNavigate();
     const location = useLocation();
 
     const closeModal = () => setModal(false);
+    const closeRegisterModal = () => setModalRegister(false);
     const handleProfile = () => navigate("/profile");
 
     const handleLogout = () => {
@@ -94,6 +97,12 @@ function Navigation() {
                                 Log In
                             </button>
                             <button
+                                onClick={() => setModalRegister(true)}
+                                className="px-4 py-1 border border-blue-600 text-blue-600 rounded hover:bg-blue-600 hover:text-white transition"
+                            >
+                                Register
+                            </button>
+                            <button
                                 onClick={() => navigate("/offers")}
                                 className="px-4 py-1.5 text-sm font-medium text-white bg-blue-800 rounded-full hover:bg-blue-900 transition"
                             >
@@ -122,8 +131,28 @@ function Navigation() {
             {/* Login Modal */}
             {modal && (
                 <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-                    <div onClick={closeModal} className="absolute inset-0 cursor-pointer" />
-                    <LogIn closeM={closeModal} />
+                    <div
+                        onClick={closeModal}
+                        className="absolute inset-0 cursor-pointer"
+                        style={{ zIndex: 10 }}
+                    />
+                    <div style={{ zIndex: 20, position: "relative" }}>
+                        <LogIn closeM={closeModal} />
+                    </div>
+                </div>
+            )}
+
+            {/* Modal Register */}
+            {modalRegister && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+                    <div
+                        onClick={closeRegisterModal}
+                        className="absolute inset-0 cursor-pointer"
+                        style={{ zIndex: 10 }}
+                    />
+                    <div style={{ zIndex: 20, position: "relative" }}>
+                        <Register closeM={closeRegisterModal} />
+                    </div>
                 </div>
             )}
         </>
