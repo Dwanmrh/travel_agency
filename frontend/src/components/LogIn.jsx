@@ -1,3 +1,5 @@
+// src/components/Login.jsx
+
 import React, { useState } from "react";
 import { useForm } from "../hooks/useForm";
 import { UserService } from "../services/UserService";
@@ -43,12 +45,21 @@ function LogIn() {
         if (response) {
             const user = await UserService.getUser(data);
             SessionService.saveSession(user);
-            navigate("/adminOffers");
-            toast.success("Successfully logged in !", {
+
+            if (user[0].role === "admin" || user[0].role === "staff") {
+                navigate("/adminOffers");
+            } else if (user[0].role === "user") {
+                navigate("/offers");
+            } else {
+                toast.error("Unknown role. Access denied.");
+                return;
+            }
+
+            toast.success("Successfully logged in!", {
                 position: toast.POSITION.TOP_RIGHT,
             });
         } else {
-            toast.error("Error! Change your credentials !", {
+            toast.error("Login gagal! Periksa email atau password.", {
                 position: toast.POSITION.TOP_RIGHT,
             });
         }

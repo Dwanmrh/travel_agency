@@ -1,21 +1,36 @@
+// src/pages/Offers.jsx
+
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import OfferCard from "../components/OfferElements/OfferCard";
 import OfferDetails from "../components/OfferElements/OfferDetails";
 import { OfferService } from "../services/OfferService";
 import Pagination from "../components/Pagination";
 import Search from "../components/Search";
 import Navigation from "../components/Navigation";
+import { SessionService } from "../services/SessionService";
 import homeBg from "../assets/homeBg.jpg";
 
 const Offers = () => {
+    const navigate = useNavigate();
     const [offers, setOffers] = useState([]);
     const [modal, setModal] = useState(null);
     const [currentPage, setCurrentPage] = useState(1);
     const [minPage, setMinPage] = useState(1);
-    const [showOffers, setShowOffers] = useState(6); // ganti ke 6 per page agar layout terlihat lebih rapi
+    const [showOffers, setShowOffers] = useState(6);
     const [maxPage, setMaxPage] = useState(3);
     const [totalPages, setTotalPages] = useState(1);
     const [displayedOffers, setDisplayedOffers] = useState([]);
+
+    // ✅ Proteksi akses berdasarkan role
+    useEffect(() => {
+        const user = SessionService.getSessionFromStorage();
+        if (!user || user.length === 0) {
+            navigate("/login");
+        } else if (user[0].role !== "user") {
+            navigate("/adminOffers");
+        }
+    }, []);
 
     useEffect(() => {
         document.body.style.overflow = modal ? "hidden" : "auto";
@@ -53,17 +68,13 @@ const Offers = () => {
                 backgroundImage: `url(${homeBg})`,
             }}
         >
-            {/* Overlay gelap untuk keterbacaan */}
             <div className="absolute inset-0 bg-black opacity-50 z-0" />
 
-            {/* Navigation tetap di atas */}
             <div className="fixed w-full z-20">
                 <Navigation />
             </div>
 
-            {/* Konten utama */}
             <div className="relative z-10 pt-[130px] pb-[100px] px-4 sm:px-8 max-w-[1440px] mx-auto">
-                {/* Search */}
                 <div className="mb-10">
                     <Search searchOffers={(data) => {
                         setOffers(data);
@@ -71,7 +82,6 @@ const Offers = () => {
                     }} />
                 </div>
 
-                {/* Offer Cards */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                     {offerCards.length > 0 ? (
                         offerCards
@@ -82,7 +92,6 @@ const Offers = () => {
                     )}
                 </div>
 
-                {/* Pagination */}
                 <div className="mt-12 flex justify-center">
                     <Pagination
                         currentPage={currentPage}
@@ -98,7 +107,6 @@ const Offers = () => {
                 </div>
             </div>
 
-            {/* Modal Offer Details */}
             {modal && (
                 <div className="fixed inset-0 z-50 flex justify-center items-center">
                     <div
