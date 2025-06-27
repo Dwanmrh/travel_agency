@@ -1,5 +1,4 @@
 import React, { useEffect, useReducer } from "react";
-
 import { validate } from "../../utils/validators";
 
 const inputReducer = (state, action) => {
@@ -10,12 +9,8 @@ const inputReducer = (state, action) => {
                 value: action.val,
                 isValid: validate(action.val, action.validators),
             };
-        case "TOUCH": {
-            return {
-                ...state,
-                isTouched: true,
-            };
-        }
+        case "TOUCH":
+            return { ...state, isTouched: true };
         default:
             return state;
     }
@@ -40,7 +35,7 @@ const Input = ({
         isValid: initialValid || false,
     });
 
-    const { value, isValid } = inputState;
+    const { value, isValid, isTouched } = inputState;
 
     useEffect(() => {
         onInput(id, value, isValid);
@@ -50,48 +45,48 @@ const Input = ({
         dispatch({
             type: "CHANGE",
             val: event.target.value,
-            validators: validators,
+            validators,
         });
     };
 
     const touchHandler = () => {
-        dispatch({
-            type: "TOUCH",
-        });
+        dispatch({ type: "TOUCH" });
     };
 
+    const hasError = !isValid && isTouched;
+
     return (
-        <div className="mb-2 relative">
-            <label
-                htmlFor={id}
-                className={`mb-3 block ${labelStyle} text-darkGray`}
-            >
-                {label}
-            </label>
+        <div className="flex flex-col">
+            {label && (
+                <label
+                    htmlFor={id}
+                    className={`mb-1 text-sm font-medium text-gray-700 ${labelStyle}`}
+                >
+                    {label}
+                </label>
+            )}
             <input
-                disabled={disabled}
                 id={id}
                 type={type}
                 placeholder={placeholder}
+                value={value}
+                disabled={disabled}
                 onChange={changeHandler}
                 onBlur={touchHandler}
-                value={inputState.value}
-                className={`
-              
-                ${disabled ? "border-[grey] text-[grey]" : ""}
-                ${
-                    !inputState.isValid && inputState.isTouched
-                        ? "bg-lightRed border border-darkRed text-darkRed placeholder-darkRed "
-                        : ""
-                } w-full rounded-md border border-black py-2 px-2 text-base font-normal text-black outline-none focus:border-lightGreen focus:shadow-md`}
+                className={`w-full px-4 py-2 text-sm rounded-lg border transition duration-200 outline-none
+                    ${disabled ? "bg-gray-100 text-gray-400 cursor-not-allowed" : ""}
+                    ${
+                        hasError
+                            ? "border-red-400 bg-red-50 text-red-700 placeholder-red-400 focus:border-red-500 focus:ring-red-300"
+                            : "border-gray-300 text-gray-800 placeholder-gray-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-200"
+                    }
+                `}
             />
-            {!inputState.isValid && inputState.isTouched && (
-                <div className="inline-flex absolute top-[90px] right-0">
-                    <img className="mr-2" src="/error-sign.svg" alt="error" />
-                    <p className="text-darkRed font-semibold text-sm">
-                        {errorText}
-                    </p>
-                </div>
+            {hasError && (
+                <p className="mt-1 text-xs text-red-500 flex items-center">
+                    <img src="/error-sign.svg" alt="error" className="w-4 h-4 mr-1" />
+                    {errorText || "Invalid input"}
+                </p>
             )}
         </div>
     );
