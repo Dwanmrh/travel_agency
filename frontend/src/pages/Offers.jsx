@@ -7,7 +7,6 @@ import Pagination from "../components/Pagination";
 import Search from "../components/Search";
 import Navigation from "../components/Navigation";
 import { SessionService } from "../services/SessionService";
-import homeBg from "../assets/homeBg.jpg";
 
 const Offers = () => {
     const navigate = useNavigate();
@@ -78,11 +77,7 @@ const Offers = () => {
     ));
 
     return (
-        <div
-            className="min-h-screen w-full bg-gradient-to-b from-blue-100 via-blue-50 to-white bg-fixed"
-            style={{ backgroundImage: `url(${homeBg})` }}
-        >
-            <div className="absolute inset-0 bg-black opacity-50 z-0" />
+        <div className="min-h-screen w-full bg-white">
             <div className="fixed w-full z-30">
                 <Navigation />
             </div>
@@ -100,7 +95,7 @@ const Offers = () => {
                 </div>
 
                 {loading ? (
-                    <p className="text-white text-center text-lg col-span-full">Loading offers...</p>
+                    <p className="text-gray-700 text-center text-lg col-span-full">Loading offers...</p>
                 ) : error ? (
                     <p className="text-red-600 text-center text-lg col-span-full">Failed to load offers.</p>
                 ) : (
@@ -108,7 +103,7 @@ const Offers = () => {
                         {offerCards.length > 0 ? (
                             offerCards
                         ) : (
-                            <p className="text-white text-lg col-span-full text-center">No offers found.</p>
+                            <p className="text-gray-700 text-lg col-span-full text-center">No offers found.</p>
                         )}
                     </div>
                 )}
@@ -131,7 +126,7 @@ const Offers = () => {
             </div>
 
             {modal && (
-                <div className="fixed inset-0 z-50 flex justify-center items-center backdrop-blur-md">
+                <div className="fixed inset-0 z-50 flex justify-center items-center backdrop-blur-sm">
                     <div
                         className="absolute inset-0 bg-black/40 cursor-pointer"
                         onClick={() => setModal(null)}

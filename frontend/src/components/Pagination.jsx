@@ -55,7 +55,7 @@ function Pagination({
 
     const handleConfirm = () => {
         setShowOffers(perPage);
-        setCurrentPage(1); // Reset to page 1
+        setCurrentPage(1);
         setMinPage(1);
         setMaxPage(3);
     };
@@ -66,7 +66,7 @@ function Pagination({
             <div
                 key={page}
                 className={`w-9 h-9 border border-gray-300 rounded flex items-center justify-center text-sm font-medium cursor-pointer ${
-                    currentPage === page ? "bg-black text-white" : "bg-white"
+                    currentPage === page ? "bg-black text-white" : "bg-white hover:bg-gray-100"
                 }`}
                 onClick={() => setClickedPage(page)}
             >
@@ -76,20 +76,20 @@ function Pagination({
     );
 
     return (
-        <div className="flex flex-col items-center w-full space-y-6 px-4">
+        <div className="flex flex-col items-center w-full max-w-3xl mx-auto px-6 py-8 bg-white rounded-lg shadow-lg space-y-6">
             {/* Page navigation */}
             <div className="flex items-center flex-wrap gap-2 justify-center">
                 <img
                     src={arrow}
                     alt="Previous"
-                    className="rotate-180 w-5 h-5 cursor-pointer"
+                    className="rotate-180 w-5 h-5 cursor-pointer hover:opacity-70"
                     onClick={decrementPage}
                 />
                 {pageNumbers}
                 <img
                     src={arrow}
                     alt="Next"
-                    className="w-5 h-5 cursor-pointer"
+                    className="w-5 h-5 cursor-pointer hover:opacity-70"
                     onClick={incrementPage}
                 />
             </div>
@@ -106,16 +106,15 @@ function Pagination({
                     onChange={handleChange}
                     className="border border-gray-300 rounded px-3 py-1 shadow-sm"
                 >
-                    <option value={6}>6</option>
-                    <option value={9}>9</option>
-                    <option value={12}>12</option>
-                    <option value={25}>25</option>
-                    <option value={50}>50</option>
-                    <option value={100}>100</option>
+                    {[6, 9, 12, 25, 50, 100].map((num) => (
+                        <option key={num} value={num}>
+                            {num}
+                        </option>
+                    ))}
                 </select>
                 <button
                     onClick={handleConfirm}
-                    className="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700 transition"
+                    className="bg-blue-600 text-white px-4 py-1.5 rounded hover:bg-blue-700 transition"
                 >
                     Confirm
                 </button>
